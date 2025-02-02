@@ -5,11 +5,16 @@ interface ProgressIndicatorProps {
 
 const ProgressIndicator = ({ currentStep, totalSteps }: ProgressIndicatorProps) => {
   return (
-    <div className="mb-4">
+    <div className="mb-8">
       <div className="text-sm text-gray-600 font-inter mb-2">
         STEP {currentStep} OF {totalSteps}
       </div>
-      <div className="h-1 w-24 bg-black"></div>
+      <div className="h-1 bg-gray-200 w-full">
+        <div 
+          className="h-full bg-black transition-all duration-300 ease-in-out"
+          style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+        />
+      </div>
     </div>
   );
 };
