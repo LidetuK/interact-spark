@@ -6,14 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ProgressIndicator from "@/components/ProgressIndicator";
 import { toast } from "sonner";
+import useWeb3Forms from "@web3forms/react";
 
 interface FeedbackFormData {
   feedbackType: string[];
   otherFeedbackType?: string;
   name: string;
   email: string;
+  countryCode: string;
   phone?: string;
   message: string;
   satisfaction: string;
@@ -27,19 +30,54 @@ interface FeedbackFormData {
   termsAccepted: boolean;
 }
 
+const COUNTRY_CODES = [
+  { label: "United States", value: "+1" },
+  { label: "United Kingdom", value: "+44" },
+  { label: "Canada", value: "+1" },
+  // Add more country codes as needed
+];
+
+const HOW_HEARD_OPTIONS = [
+  "Search Engine (e.g., Google)",
+  "Social Media",
+  "Friend/Family Referral",
+  "Email Newsletter",
+  "Podcast/Video",
+  "Other"
+];
+
 const FeedbackForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
   
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<FeedbackFormData>();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FeedbackFormData>({
+    defaultValues: {
+      countryCode: "+1"
+    }
+  });
+
+  const { submit: submitWeb3Form } = useWeb3Forms({
+    access_key: 'YOUR_WEB3FORMS_ACCESS_KEY', // Replace with your actual access key
+    settings: {
+      from_name: 'Feedback Form',
+      subject: 'New Feedback Submission',
+    },
+  });
 
   const satisfaction = watch("satisfaction");
   const foundWhatLookingFor = watch("foundWhatLookingFor");
   const followUp = watch("followUp");
 
-  const onSubmit = (data: FeedbackFormData) => {
-    console.log(data);
-    toast.success("Thank you for your feedback! We'll get back to you soon.");
+  const onSubmit = async (data: FeedbackFormData) => {
+    try {
+      await submitWeb3Form({
+        ...data,
+        redirect_to: "mailto:thee.lifeguide+inquiryfeedback@gmail.com"
+      });
+      toast.success("Thank you for your feedback! We'll get back to you soon.");
+    } catch (error) {
+      toast.error("There was an error submitting your feedback. Please try again.");
+    }
   };
 
   const nextStep = () => {
@@ -113,13 +151,33 @@ const FeedbackForm = () => {
               )}
             </div>
             <div>
-              <Label htmlFor="phone">Your Phone Number (Optional)</Label>
-              <Input
-                id="phone"
-                type="tel"
-                {...register("phone")}
-                className="mt-1"
-              />
+              <Label>Your Phone Number (Optional)</Label>
+              <div className="flex gap-2">
+                <Select
+                  onValueChange={(value) => {
+                    register("countryCode").onChange({ target: { value } });
+                  }}
+                  defaultValue="+1"
+                >
+                  <SelectTrigger className="w-[140px]">
+                    <SelectValue placeholder="Country Code" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {COUNTRY_CODES.map((code) => (
+                      <SelectItem key={code.value} value={code.value}>
+                        {code.label} ({code.value})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  id="phone"
+                  type="tel"
+                  {...register("phone")}
+                  className="flex-1"
+                  placeholder="Phone number"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -211,6 +269,65 @@ const FeedbackForm = () => {
               </div>
             )}
 
+            <div>
+              <Label>Would you like someone from our team to follow up with you?</Label>
+              <RadioGroup
+                onValueChange={(value) => {
+                  register("followUp").onChange({ target: { value } });
+                }}
+                className="mt-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="yes" id="followup-yes" />
+                  <Label htmlFor="followup-yes">Yes</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="no" id="followup-no" />
+                  <Label htmlFor="followup-no">No</Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {followUp === "yes" && (
+              <div>
+                <Label htmlFor="bestTimeToReach">When is the best time to reach you?</Label>
+                <Input
+                  type="time"
+                  id="bestTimeToReach"
+                  {...register("bestTimeToReach")}
+                  className="mt-1"
+                />
+              </div>
+            )}
+
+            <div>
+              <Label>How did you hear about us? (Optional)</Label>
+              <RadioGroup
+                onValueChange={(value) => {
+                  register("howHeardAboutUs").onChange({ target: { value } });
+                }}
+                className="mt-2"
+              >
+                {HOW_HEARD_OPTIONS.map((option) => (
+                  <div key={option} className="flex items-center space-x-2">
+                    <RadioGroupItem value={option} id={`heard-${option}`} />
+                    <Label htmlFor={`heard-${option}`}>{option}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+
+            {watch("howHeardAboutUs") === "Other" && (
+              <div>
+                <Label htmlFor="otherHowHeardAboutUs">Please specify:</Label>
+                <Input
+                  id="otherHowHeardAboutUs"
+                  {...register("otherHowHeardAboutUs")}
+                  className="mt-1"
+                />
+              </div>
+            )}
+
             <div className="mt-6">
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -218,7 +335,7 @@ const FeedbackForm = () => {
                   id="terms"
                 />
                 <Label htmlFor="terms" className="text-sm">
-                  By clicking "Submit," you agree to receive emails or phone calls from our team to address your inquiry or feedback.
+                  By clicking "Submit," you agree to receive emails or phone calls from our team to address your inquiry or feedback. For more information, please review our Terms of Use and Privacy Policy.
                 </Label>
               </div>
               {errors.termsAccepted && (
