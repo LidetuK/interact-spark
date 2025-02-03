@@ -49,8 +49,9 @@ const HOW_HEARD_OPTIONS = [
 const FeedbackForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
+  const [isSubmitted, setIsSubmitted] = useState(false);
   
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<FeedbackFormData>({
+  const { register, handleSubmit, watch, formState: { errors }, trigger } = useForm<FeedbackFormData>({
     defaultValues: {
       countryCode: "+1"
     }
@@ -63,7 +64,8 @@ const FeedbackForm = () => {
       subject: 'New Feedback Submission',
     },
     onSuccess: (successMessage, data) => {
-      toast.success("Thank you for submitting your inquiry, our team will review it and respond promptly. Thank you for helping us improve—we're grateful for your input!");
+      setIsSubmitted(true);
+      toast.success("Thank you for your feedback! We appreciate your input and will review it carefully.");
     },
     onError: (errorMessage, data) => {
       toast.error("There was an error submitting your feedback. Please try again.");
@@ -73,6 +75,7 @@ const FeedbackForm = () => {
   const satisfaction = watch("satisfaction");
   const foundWhatLookingFor = watch("foundWhatLookingFor");
   const followUp = watch("followUp");
+  const feedbackType = watch("feedbackType");
 
   const onSubmit = async (data: FeedbackFormData) => {
     try {
@@ -85,8 +88,41 @@ const FeedbackForm = () => {
     }
   };
 
-  const nextStep = () => {
-    if (currentStep < totalSteps) {
+  const validateStep = async () => {
+    let isValid = false;
+    
+    switch (currentStep) {
+      case 1:
+        isValid = await trigger("feedbackType");
+        if (!feedbackType || feedbackType.length === 0) {
+          toast.error("Please select at least one feedback type");
+          return false;
+        }
+        break;
+      case 2:
+        isValid = await trigger(["name", "email"]);
+        if (!isValid) {
+          toast.error("Please fill in all required fields");
+          return false;
+        }
+        break;
+      case 3:
+        isValid = await trigger("message");
+        if (!isValid) {
+          toast.error("Please provide your feedback message");
+          return false;
+        }
+        break;
+      default:
+        isValid = true;
+    }
+    
+    return isValid;
+  };
+
+  const nextStep = async () => {
+    const isValid = await validateStep();
+    if (isValid && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -96,6 +132,19 @@ const FeedbackForm = () => {
       setCurrentStep(currentStep - 1);
     }
   };
+
+  if (isSubmitted) {
+    return (
+      <div className="text-center space-y-4">
+        <h2 className="text-2xl font-semibold text-green-600">Thank You!</h2>
+        <p className="text-gray-600">
+          Your feedback has been submitted successfully. We appreciate your time and input!
+        </p>
+      </div>
+    );
+  }
+
+  // ... keep existing code (form render logic with steps)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
