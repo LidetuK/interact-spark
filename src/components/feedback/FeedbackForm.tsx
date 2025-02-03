@@ -63,7 +63,7 @@ const FeedbackForm = () => {
       subject: 'New Feedback Submission',
     },
     onSuccess: (successMessage, data) => {
-      toast.success("Thank you for your feedback! We'll get back to you soon.");
+      toast.success("Thank you for submitting your inquiry, our team will review it and respond promptly. Thank you for helping us improve—we're grateful for your input!");
     },
     onError: (errorMessage, data) => {
       toast.error("There was an error submitting your feedback. Please try again.");
