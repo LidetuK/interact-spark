@@ -62,6 +62,12 @@ const FeedbackForm = () => {
       from_name: 'Feedback Form',
       subject: 'New Feedback Submission',
     },
+    onSuccess: (successMessage, data) => {
+      toast.success("Thank you for your feedback! We'll get back to you soon.");
+    },
+    onError: (errorMessage, data) => {
+      toast.error("There was an error submitting your feedback. Please try again.");
+    }
   });
 
   const satisfaction = watch("satisfaction");
@@ -74,7 +80,6 @@ const FeedbackForm = () => {
         ...data,
         redirect_to: "mailto:thee.lifeguide+inquiryfeedback@gmail.com"
       });
-      toast.success("Thank you for your feedback! We'll get back to you soon.");
     } catch (error) {
       toast.error("There was an error submitting your feedback. Please try again.");
     }
