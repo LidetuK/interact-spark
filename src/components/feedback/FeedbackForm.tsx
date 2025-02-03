@@ -57,7 +57,7 @@ const FeedbackForm = () => {
   });
 
   const { submit: submitWeb3Form } = useWeb3Forms({
-    access_key: 'YOUR_WEB3FORMS_ACCESS_KEY', // Replace with your actual access key
+    access_key: 'e9a29034-a6e8-4712-bc82-96088b656675',
     settings: {
       from_name: 'Feedback Form',
       subject: 'New Feedback Submission',
