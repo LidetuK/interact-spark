@@ -113,17 +113,18 @@ const FeedbackForm = () => {
     );
   }
 
-  // ... keep existing code (form render logic with steps)
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
 
       {currentStep === 1 && (
         <div className="space-y-6">
-          <p className="text-center mb-8 text-gray-600">
-            Thank you for visiting our website. Your feedback and inquiries are incredibly valuable to us—they help us improve and better serve you. Whether you have a question, suggestion, or just want to share your thoughts, we're here to listen!
-          </p>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-semibold mb-4">We'd Love to Hear From You!</h1>
+            <p className="text-gray-600">
+              Thank you for visiting our website. Your feedback and inquiries are incredibly valuable to us—they help us improve and better serve you. Whether you have a question, suggestion, or just want to share your thoughts, we're here to listen!
+            </p>
+          </div>
           <h2 className="text-2xl font-inter font-semibold">What's on your mind?</h2>
           <div className="space-y-4">
             {[
@@ -354,6 +355,17 @@ const FeedbackForm = () => {
               </div>
             )}
 
+            <div className="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <h3 className="text-lg font-semibold mb-4">Terms and Conditions</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                By clicking "Submit," you agree to the following:
+              </p>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-gray-600">
+                <li>You consent to receive emails or phone calls from Resk'Que's team to address your inquiry or feedback.</li>
+                <li>For more information, please review our <a href="#" className="text-blue-600 hover:underline">Terms of Use</a> and <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>.</li>
+              </ul>
+            </div>
+
             <div className="mt-6">
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -361,7 +373,7 @@ const FeedbackForm = () => {
                   id="terms"
                 />
                 <Label htmlFor="terms" className="text-sm">
-                  By clicking "Submit," you agree to receive emails or phone calls from our team to address your inquiry or feedback. For more information, please review our Terms of Use and Privacy Policy.
+                  I agree to the Terms and Conditions
                 </Label>
               </div>
               {errors.termsAccepted && (
