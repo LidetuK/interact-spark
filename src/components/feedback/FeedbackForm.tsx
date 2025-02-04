@@ -87,6 +87,8 @@ const FeedbackForm = () => {
       } catch (error) {
         toast.error("There was an error submitting your feedback. Please try again.");
       }
+    } else {
+      nextStep();
     }
   };
 
@@ -120,7 +122,6 @@ const FeedbackForm = () => {
       {currentStep === 1 && (
         <div className="space-y-6">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-semibold mb-4">We'd Love to Hear From You!</h1>
             <p className="text-gray-600">
               Thank you for visiting our website. Your feedback and inquiries are incredibly valuable to us—they help us improve and better serve you. Whether you have a question, suggestion, or just want to share your thoughts, we're here to listen!
             </p>
