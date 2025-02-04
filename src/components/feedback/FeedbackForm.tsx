@@ -51,7 +51,7 @@ const FeedbackForm = () => {
   const totalSteps = 4;
   const [isSubmitted, setIsSubmitted] = useState(false);
   
-  const { register, handleSubmit, watch, formState: { errors }, trigger } = useForm<FeedbackFormData>({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FeedbackFormData>({
     defaultValues: {
       countryCode: "+1"
     }
@@ -78,51 +78,20 @@ const FeedbackForm = () => {
   const feedbackType = watch("feedbackType");
 
   const onSubmit = async (data: FeedbackFormData) => {
-    try {
-      await submitWeb3Form({
-        ...data,
-        redirect_to: "mailto:thee.lifeguide+inquiryfeedback@gmail.com"
-      });
-    } catch (error) {
-      toast.error("There was an error submitting your feedback. Please try again.");
+    if (currentStep === totalSteps) {
+      try {
+        await submitWeb3Form({
+          ...data,
+          redirect_to: "mailto:thee.lifeguide+inquiryfeedback@gmail.com"
+        });
+      } catch (error) {
+        toast.error("There was an error submitting your feedback. Please try again.");
+      }
     }
   };
 
-  const validateStep = async () => {
-    let isValid = false;
-    
-    switch (currentStep) {
-      case 1:
-        isValid = await trigger("feedbackType");
-        if (!feedbackType || feedbackType.length === 0) {
-          toast.error("Please select at least one feedback type");
-          return false;
-        }
-        break;
-      case 2:
-        isValid = await trigger(["name", "email"]);
-        if (!isValid) {
-          toast.error("Please fill in all required fields");
-          return false;
-        }
-        break;
-      case 3:
-        isValid = await trigger("message");
-        if (!isValid) {
-          toast.error("Please provide your feedback message");
-          return false;
-        }
-        break;
-      default:
-        isValid = true;
-    }
-    
-    return isValid;
-  };
-
-  const nextStep = async () => {
-    const isValid = await validateStep();
-    if (isValid && currentStep < totalSteps) {
+  const nextStep = () => {
+    if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
   };

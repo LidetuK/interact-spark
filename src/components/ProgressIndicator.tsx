@@ -11,8 +11,11 @@ const ProgressIndicator = ({ currentStep, totalSteps }: ProgressIndicatorProps) 
       </div>
       <div className="h-1 bg-gray-200 w-full">
         <div 
-          className="h-full bg-black transition-all duration-300 ease-in-out"
-          style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+          className="h-full transition-all duration-300 ease-in-out"
+          style={{ 
+            width: `${(currentStep / totalSteps) * 100}%`,
+            backgroundColor: '#FF0000'
+          }}
         />
       </div>
     </div>
