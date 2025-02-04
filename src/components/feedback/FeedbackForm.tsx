@@ -106,7 +106,7 @@ const FeedbackForm = () => {
   if (isSubmitted) {
     return (
       <div className="text-center space-y-4">
-        <h2 className="text-2xl font-semibold text-green-600">Thank You!</h2>
+        <h2 className="text-2xl font-semibold text-black">Thank You!</h2>
         <p className="text-gray-600">
           Your feedback has been submitted successfully. We appreciate your time and input!
         </p>
