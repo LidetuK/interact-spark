@@ -34,7 +34,6 @@ const COUNTRY_CODES = [
   { label: "United States", value: "+1" },
   { label: "United Kingdom", value: "+44" },
   { label: "Canada", value: "+1" },
-  // Add more country codes as needed
 ];
 
 const HOW_HEARD_OPTIONS = [
@@ -122,11 +121,11 @@ const FeedbackForm = () => {
       {currentStep === 1 && (
         <div className="space-y-6">
           <div className="text-center mb-8">
+            <h2 className="text-2xl font-inter font-semibold mb-4">We'd Love to Hear From You!</h2>
             <p className="text-gray-600">
               Thank you for visiting our website. Your feedback and inquiries are incredibly valuable to us—they help us improve and better serve you. Whether you have a question, suggestion, or just want to share your thoughts, we're here to listen!
             </p>
           </div>
-          <h2 className="text-2xl font-inter font-semibold">What's on your mind?</h2>
           <div className="space-y-4">
             {[
               "General Feedback about the Website",
@@ -397,22 +396,12 @@ const FeedbackForm = () => {
             Previous
           </Button>
         )}
-        {currentStep < totalSteps ? (
-          <Button
-            type="button"
-            onClick={nextStep}
-            className="ml-auto"
-          >
-            Next Step
-          </Button>
-        ) : (
-          <Button
-            type="submit"
-            className="ml-auto"
-          >
-            Send My Feedback
-          </Button>
-        )}
+        <Button
+          type="submit"
+          className="ml-auto"
+        >
+          {currentStep < totalSteps ? "Next Step" : "Send My Feedback"}
+        </Button>
       </div>
     </form>
   );
