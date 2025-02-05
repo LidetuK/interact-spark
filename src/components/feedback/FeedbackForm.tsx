@@ -120,12 +120,6 @@ const FeedbackForm = () => {
 
       {currentStep === 1 && (
         <div className="space-y-6">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-inter font-semibold mb-4">We'd Love to Hear From You!</h2>
-            <p className="text-gray-600">
-              Thank you for visiting our website. Your feedback and inquiries are incredibly valuable to us—they help us improve and better serve you. Whether you have a question, suggestion, or just want to share your thoughts, we're here to listen!
-            </p>
-          </div>
           <div className="space-y-4">
             {[
               "General Feedback about the Website",
