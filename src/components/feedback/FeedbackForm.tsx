@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -105,8 +106,8 @@ const FeedbackForm = () => {
 
   if (isSubmitted) {
     return (
-      <div className="text-center space-y-4">
-        <h2 className="text-2xl font-semibold text-black">Thank You!</h2>
+      <div className="text-center space-y-4 p-4">
+        <h2 className="text-xl sm:text-2xl font-semibold text-black">Thank You!</h2>
         <p className="text-gray-600">
           Your feedback has been submitted successfully. We appreciate your time and input!
         </p>
@@ -115,20 +116,20 @@ const FeedbackForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6 sm:space-y-8">
       {currentStep === 1 && (
         <>
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-inter font-bold mb-4">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-4xl font-inter font-bold mb-3 sm:mb-4">
               We'd Love to Hear From You!
             </h1>
-            <p className="text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600 px-2 sm:px-4">
               Thank you for visiting our website. Your feedback and inquiries are incredibly valuable to us—they help us improve and better serve you. Whether you have a question, suggestion, or just want to share your thoughts, we're here to listen!
             </p>
           </div>
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
-          <div className="space-y-6">
-            <div className="space-y-4">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-3 sm:space-y-4">
               {[
                 "General Feedback about the Website",
                 "Question about Our Services/Programs",
@@ -136,9 +137,9 @@ const FeedbackForm = () => {
                 "Partnership or Collaboration Opportunity",
                 "Other"
               ].map((option) => (
-                <div key={option} className="flex items-center space-x-2">
+                <div key={option} className="flex items-center space-x-2 sm:space-x-3">
                   <Checkbox {...register("feedbackType")} value={option} />
-                  <Label>{option}</Label>
+                  <Label className="text-sm sm:text-base">{option}</Label>
                 </div>
               ))}
             </div>
@@ -157,21 +158,21 @@ const FeedbackForm = () => {
         <>
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
           <div className="space-y-6">
-            <h2 className="text-2xl font-inter font-semibold">Your Contact Information</h2>
+            <h2 className="text-xl sm:text-2xl font-inter font-semibold">Your Contact Information</h2>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name">Your Name *</Label>
+                <Label htmlFor="name" className="text-sm sm:text-base">Your Name *</Label>
                 <Input
                   id="name"
                   {...register("name", { required: true })}
                   className="mt-1"
                 />
                 {errors.name && (
-                  <span className="text-red-500 text-sm">This field is required</span>
+                  <span className="text-xs sm:text-sm text-red-500">This field is required</span>
                 )}
               </div>
               <div>
-                <Label htmlFor="email">Your Email Address *</Label>
+                <Label htmlFor="email" className="text-sm sm:text-base">Your Email Address *</Label>
                 <Input
                   id="email"
                   type="email"
@@ -179,11 +180,11 @@ const FeedbackForm = () => {
                   className="mt-1"
                 />
                 {errors.email && (
-                  <span className="text-red-500 text-sm">This field is required</span>
+                  <span className="text-xs sm:text-sm text-red-500">This field is required</span>
                 )}
               </div>
               <div>
-                <Label>Your Phone Number (Optional)</Label>
+                <Label className="text-sm sm:text-base">Your Phone Number (Optional)</Label>
                 <div className="flex gap-2">
                   <Select
                     onValueChange={(value) => {
@@ -191,7 +192,7 @@ const FeedbackForm = () => {
                     }}
                     defaultValue="+1"
                   >
-                    <SelectTrigger className="w-[140px]">
+                    <SelectTrigger className="w-[120px] sm:w-[140px]">
                       <SelectValue placeholder="Country Code" />
                     </SelectTrigger>
                     <SelectContent>
@@ -220,10 +221,10 @@ const FeedbackForm = () => {
         <>
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
           <div className="space-y-6">
-            <h2 className="text-2xl font-inter font-semibold">Your Feedback</h2>
+            <h2 className="text-xl sm:text-2xl font-inter font-semibold">Your Feedback</h2>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="message">How can we assist you? *</Label>
+                <Label htmlFor="message" className="text-sm sm:text-base">How can we assist you? *</Label>
                 <Textarea
                   id="message"
                   {...register("message", { required: true })}
@@ -231,16 +232,16 @@ const FeedbackForm = () => {
                   placeholder="Please describe your inquiry or feedback in detail..."
                 />
                 {errors.message && (
-                  <span className="text-red-500 text-sm">This field is required</span>
+                  <span className="text-xs sm:text-sm text-red-500">This field is required</span>
                 )}
               </div>
               <div>
-                <Label>How satisfied are you with your experience on our website?</Label>
+                <Label className="text-sm sm:text-base">How satisfied are you with your experience on our website?</Label>
                 <RadioGroup
                   onValueChange={(value) => {
                     register("satisfaction").onChange({ target: { value } });
                   }}
-                  className="mt-2"
+                  className="mt-2 space-y-2"
                 >
                   {[
                     "Very Satisfied",
@@ -251,14 +252,14 @@ const FeedbackForm = () => {
                   ].map((option) => (
                     <div key={option} className="flex items-center space-x-2">
                       <RadioGroupItem value={option} id={option} />
-                      <Label htmlFor={option}>{option}</Label>
+                      <Label htmlFor={option} className="text-sm sm:text-base">{option}</Label>
                     </div>
                   ))}
                 </RadioGroup>
               </div>
               {(satisfaction === "Dissatisfied" || satisfaction === "Very Dissatisfied") && (
                 <div>
-                  <Label htmlFor="improvementSuggestion">What could we do to improve your experience?</Label>
+                  <Label htmlFor="improvementSuggestion" className="text-sm sm:text-base">What could we do to improve your experience?</Label>
                   <Textarea
                     id="improvementSuggestion"
                     {...register("improvementSuggestion")}
@@ -275,30 +276,30 @@ const FeedbackForm = () => {
         <>
           <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
           <div className="space-y-6">
-            <h2 className="text-2xl font-inter font-semibold">Additional Information</h2>
+            <h2 className="text-xl sm:text-2xl font-inter font-semibold">Additional Information</h2>
             <div className="space-y-4">
               <div>
-                <Label>Did you find what you were looking for?</Label>
+                <Label className="text-sm sm:text-base">Did you find what you were looking for?</Label>
                 <RadioGroup
                   onValueChange={(value) => {
                     register("foundWhatLookingFor").onChange({ target: { value } });
                   }}
-                  className="mt-2"
+                  className="mt-2 space-y-2"
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="yes" id="found-yes" />
-                    <Label htmlFor="found-yes">Yes</Label>
+                    <Label htmlFor="found-yes" className="text-sm sm:text-base">Yes</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="no" id="found-no" />
-                    <Label htmlFor="found-no">No</Label>
+                    <Label htmlFor="found-no" className="text-sm sm:text-base">No</Label>
                   </div>
                 </RadioGroup>
               </div>
 
               {foundWhatLookingFor === "no" && (
                 <div>
-                  <Label htmlFor="whatWasLookingFor">What were you hoping to find?</Label>
+                  <Label htmlFor="whatWasLookingFor" className="text-sm sm:text-base">What were you hoping to find?</Label>
                   <Textarea
                     id="whatWasLookingFor"
                     {...register("whatWasLookingFor")}
@@ -308,27 +309,27 @@ const FeedbackForm = () => {
               )}
 
               <div>
-                <Label>Would you like someone from our team to follow up with you?</Label>
+                <Label className="text-sm sm:text-base">Would you like someone from our team to follow up with you?</Label>
                 <RadioGroup
                   onValueChange={(value) => {
                     register("followUp").onChange({ target: { value } });
                   }}
-                  className="mt-2"
+                  className="mt-2 space-y-2"
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="yes" id="followup-yes" />
-                    <Label htmlFor="followup-yes">Yes</Label>
+                    <Label htmlFor="followup-yes" className="text-sm sm:text-base">Yes</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="no" id="followup-no" />
-                    <Label htmlFor="followup-no">No</Label>
+                    <Label htmlFor="followup-no" className="text-sm sm:text-base">No</Label>
                   </div>
                 </RadioGroup>
               </div>
 
               {followUp === "yes" && (
                 <div>
-                  <Label htmlFor="bestTimeToReach">When is the best time to reach you?</Label>
+                  <Label htmlFor="bestTimeToReach" className="text-sm sm:text-base">When is the best time to reach you?</Label>
                   <Input
                     type="time"
                     id="bestTimeToReach"
@@ -339,17 +340,17 @@ const FeedbackForm = () => {
               )}
 
               <div>
-                <Label>How did you hear about us? (Optional)</Label>
+                <Label className="text-sm sm:text-base">How did you hear about us? (Optional)</Label>
                 <RadioGroup
                   onValueChange={(value) => {
                     register("howHeardAboutUs").onChange({ target: { value } });
                   }}
-                  className="mt-2"
+                  className="mt-2 space-y-2"
                 >
                   {HOW_HEARD_OPTIONS.map((option) => (
                     <div key={option} className="flex items-center space-x-2">
                       <RadioGroupItem value={option} id={`heard-${option}`} />
-                      <Label htmlFor={`heard-${option}`}>{option}</Label>
+                      <Label htmlFor={`heard-${option}`} className="text-sm sm:text-base">{option}</Label>
                     </div>
                   ))}
                 </RadioGroup>
@@ -357,7 +358,7 @@ const FeedbackForm = () => {
 
               {watch("howHeardAboutUs") === "Other" && (
                 <div>
-                  <Label htmlFor="otherHowHeardAboutUs">Please specify:</Label>
+                  <Label htmlFor="otherHowHeardAboutUs" className="text-sm sm:text-base">Please specify:</Label>
                   <Input
                     id="otherHowHeardAboutUs"
                     {...register("otherHowHeardAboutUs")}
@@ -366,29 +367,29 @@ const FeedbackForm = () => {
                 </div>
               )}
 
-              <div className="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <h3 className="text-lg font-semibold mb-4">Terms and Conditions</h3>
-                <p className="text-sm text-gray-600 mb-4">
+              <div className="mt-6 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Terms and Conditions</h3>
+                <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
                   By clicking "Submit," you agree to the following:
                 </p>
-                <ul className="list-disc pl-5 space-y-2 text-sm text-gray-600">
+                <ul className="list-disc pl-4 sm:pl-5 space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-600">
                   <li>You consent to receive emails or phone calls from Resk'Que's team to address your inquiry or feedback.</li>
                   <li>For more information, please review our <a href="#" className="text-blue-600 hover:underline">Terms of Use</a> and <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>.</li>
                 </ul>
               </div>
 
-              <div className="mt-6">
+              <div className="mt-4 sm:mt-6">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     {...register("termsAccepted", { required: true })}
                     id="terms"
                   />
-                  <Label htmlFor="terms" className="text-sm">
+                  <Label htmlFor="terms" className="text-xs sm:text-sm">
                     I agree to the Terms and Conditions
                   </Label>
                 </div>
                 {errors.termsAccepted && (
-                  <span className="text-red-500 text-sm block mt-1">
+                  <span className="text-xs sm:text-sm text-red-500 block mt-1">
                     You must accept the terms to continue
                   </span>
                 )}
@@ -398,19 +399,20 @@ const FeedbackForm = () => {
         </>
       )}
 
-      <div className="flex justify-between pt-6">
+      <div className="flex justify-between pt-4 sm:pt-6">
         {currentStep > 1 && (
           <Button
             type="button"
             variant="outline"
             onClick={previousStep}
+            className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base"
           >
             Previous
           </Button>
         )}
         <Button
           type="submit"
-          className="ml-auto"
+          className="ml-auto px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base"
         >
           {currentStep < totalSteps ? "Next Step" : "Send My Feedback"}
         </Button>
